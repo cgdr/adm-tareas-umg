@@ -4,15 +4,16 @@ const usuario = require('../controller/usuario')
 
 router.get('/', (req, res) => {
     const iu = req.query.idUsuario
-    usuario(iu).then(function(data){
+    usuario.consultaUsuario(iu).then(function(data){
         res.json(data)
     })
 })
 
 router.post('/', (req, res) => {
-    const jsUsuario = req.body.idUsuario
-    console.log(jsUsuario)
-    res.json({"MENSAJE":"SI SE PUDO"})
+    const iuDatos = req.body
+    usuario.agregaUsuario(iuDatos).then(function(data){
+        res.json(data)
+    })
 })
 
 module.exports = router
