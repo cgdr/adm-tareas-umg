@@ -16,4 +16,20 @@ router.post('/', (req, res) => {
     })
 })
 
+router.put('/', (req, res) => {
+    const iuDatos = req.body
+    console.log(iuDatos)
+    usuario.actualizaUsuario(iuDatos).then(function(data){
+        res.json(data)
+    })
+})
+
+router.delete('/', (req, res) => {
+    const iuDatos = req.body
+    console.log(iuDatos)
+    usuario.eliminaUsuario(iuDatos).then(function(data){
+        res.json(data)
+    })
+})
+
 module.exports = router

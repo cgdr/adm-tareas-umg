@@ -35,6 +35,55 @@ function agregaUsuario(data){
     })
 }
 
+function actualizaUsuario(data){
+    return new Promise (function (resolve, reject){
+        const respuseta = validaData(data)
+        if(respuseta == "OK"){
+            const consulta = 
+            `UPDATE usuario SET 
+            contrasenia = '${data.contrasenia}', estatus = '${data.estatus}',
+            nombre = '${data.nombre}', apellido = '${data.apellido}',
+            correo = '${data.correo}',telefono = ${data.telefono},
+            puesto = '${data.puesto}', fecha = '${data.fecha}'
+            WHERE idUsuario = '${data.idUsuario}'
+            `;
+            conexion.query(consulta, function(err, result){
+                if(err) console.log("El error es: " + err)
+                else{
+                    resolve(result)
+                }
+            })
+        }
+        else
+        {
+            resolve({"mensaje":`No se envio data. ${respuseta}`})
+        }
+    })
+}
+
+function eliminaUsuario(data){
+    return new Promise (function (resolve, reject){
+        const respuseta = validaDataElimina(data)
+        if(respuseta == "OK"){
+            const consulta = 
+            `UPDATE usuario SET 
+            estatus = '${data.estatus}'
+            WHERE idUsuario = '${data.idUsuario}'
+            `;
+            conexion.query(consulta, function(err, result){
+                if(err) console.log("El error es: " + err)
+                else{
+                    resolve(result)
+                }
+            })
+        }
+        else
+        {
+            resolve({"mensaje":`No se envio data. ${respuseta}`})
+        }
+    })
+}
+
 function validaData(data){
     console.log(data.idUsuario)
     if(typeof data.idUsuario === 'undefined') return "ERROR IDUSUARIO"
@@ -49,4 +98,9 @@ function validaData(data){
     else return "OK"
 }
 
-module.exports = {consultaUsuario, agregaUsuario}
+function validaDataElimina(data){
+    if(typeof data.idUsuario === 'undefined') return "ERROR IDUSUARIO"
+    else if(typeof data.estatus == 'undefined') return "ERROR ESTATUS"
+    else return "OK"
+}
+module.exports = {consultaUsuario, agregaUsuario, actualizaUsuario, eliminaUsuario}
