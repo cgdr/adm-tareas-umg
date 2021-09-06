@@ -67,7 +67,7 @@ function eliminaUsuario(data){
         if(respuseta == "OK"){
             const consulta = 
             `UPDATE usuario SET 
-            estatus = '${data.estatus}'
+            estatus = '0'
             WHERE idUsuario = '${data.idUsuario}'
             `;
             conexion.query(consulta, function(err, result){
