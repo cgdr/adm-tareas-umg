@@ -9,8 +9,11 @@ app.set('json spaces', 2)
 app.use(morgan('dev'))
 app.use(express.urlencoded({extended: false}))
 app.use(express.json())
+
+//Rutas
 app.use(require('../routes/index'))
 app.use('/api/usuario', require('../routes/usuario'))
+app.use('/api/tipoEstado', require('../routes/tipo_estado'))
 
 app.listen(app.get('port'), () => {
     console.log(`El servidor esta inicializado en el puerto ${port}`)

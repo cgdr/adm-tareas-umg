@@ -1,8 +1,8 @@
 const conexion = require('../conexion/conexion')
 
-function consultaUsuario(idUsuario='') {
+function consultaTipoEstado(idTipoEstado='') {
     return new Promise (function (resolve, reject){
-        const consulta = idUsuario == '' ? `SELECT * FROM usuario` : "SELECT * FROM usuario WHERE IDUSUARIO = '" + idUsuario + "'"
+        const consulta = idTipoEstado == '' ? `SELECT * FROM tipo_estado` : "SELECT * FROM tipo_estado WHERE idTipoEstado = '" + idTipoEstado + "'"
         conexion.query(consulta, function(err, result){
             if(err) resolve({"error":err})
             else{
@@ -13,13 +13,13 @@ function consultaUsuario(idUsuario='') {
     })
 }
 
-function agregaUsuario(data){
+function agregarTipoEstado(data){
     return new Promise (function (resolve, reject){
         const respuseta = validaData(data)
         if(respuseta == "OK"){
             const consulta = 
-                `INSERT INTO usuario (idUsuario, contrasenia, nombre, apellido, correo, telefono, puesto, fecha, estatus) 
-                VALUES ('${data.idUsuario}','${data.contrasenia}','${data.nombre}','${data.apellido}','${data.correo}',${data.telefono},'${data.puesto}','${data.fecha}','${data.estatus}')`;
+                `INSERT INTO tipo_estado (nombre, descripcion, idUsuario, estatus) 
+                VALUES ('${data.nombre}','${data.descripcion}','${data.idUsuario}','${data.estatus}')`;
 
             conexion.query(consulta, function(err, result){
                 if(err) resolve({"error":err})
@@ -35,17 +35,15 @@ function agregaUsuario(data){
     })
 }
 
-function actualizaUsuario(data){
+function actualizarTipoEstado(data){
     return new Promise (function (resolve, reject){
         const respuseta = validaData(data)
         if(respuseta == "OK"){
             const consulta = 
-            `UPDATE usuario SET 
-            contrasenia = '${data.contrasenia}', estatus = '${data.estatus}',
-            nombre = '${data.nombre}', apellido = '${data.apellido}',
-            correo = '${data.correo}',telefono = ${data.telefono},
-            puesto = '${data.puesto}', fecha = '${data.fecha}'
-            WHERE idUsuario = '${data.idUsuario}'
+            `UPDATE tipo_estado SET 
+            nombre = '${data.nombre}', descripcion = '${data.descripcion}',
+            idUsuario = '${data.idUsuario}', estatus = '${data.estatus}'
+            WHERE idTipoEstado = '${data.idTipoEstado}'
             `;
             conexion.query(consulta, function(err, result){
                 if(err) resolve({"error":err})
@@ -61,14 +59,14 @@ function actualizaUsuario(data){
     })
 }
 
-function eliminaUsuario(data){
+function eliminarTipoEstado(data){
     return new Promise (function (resolve, reject){
         const respuseta = validaDataElimina(data)
         if(respuseta == "OK"){
             const consulta = 
-            `UPDATE usuario SET 
+            `UPDATE tipo_estado SET 
             estatus = '0'
-            WHERE idUsuario = '${data.idUsuario}'
+            WHERE idTipoEstado = '${data.idTipoEstado}'
             `;
             conexion.query(consulta, function(err, result){
                 if(err) resolve({"error":err})
@@ -85,21 +83,17 @@ function eliminaUsuario(data){
 }
 
 function validaData(data){
-    console.log(data.idUsuario)
-    if(typeof data.idUsuario === 'undefined') return "ERROR IDUSUARIO"
-    else if(typeof data.contrasenia == 'undefined') return "ERROR CONTRASENIA"
-    else if(typeof data.nombre == 'undefined') return "ERROR NOMBRE"
-    else if(typeof data.apellido == 'undefined') return "ERROR APELLIDO"
-    else if(typeof data.correo == 'undefined') return "ERROR CORREO"
-    else if(typeof data.telefono == 'undefined') return "ERROR TELEFONO"
-    else if(typeof data.puesto == 'undefined') return "ERROR PUESTO"
-    else if(typeof data.fecha == 'undefined') return "ERROR FECHA"
+    if(typeof data.nombre === 'undefined') return "ERROR NOMBRE"
+    else if(typeof data.descripcion == 'undefined') return "ERROR DESCRIPCION"
+    else if(typeof data.idUsuario == 'undefined') return "ERROR IDUSUARIO"
     else if(typeof data.estatus == 'undefined') return "ERROR ESTATUS"
     else return "OK"
 }
 
 function validaDataElimina(data){
-    if(typeof data.idUsuario === 'undefined') return "ERROR IDUSUARIO"
+    if(typeof data.idTipoEstado === 'undefined') return "ERROR IDTIPOESTADO"
     else return "OK"
 }
-module.exports = {consultaUsuario, agregaUsuario, actualizaUsuario, eliminaUsuario}
+
+
+module.exports = {consultaTipoEstado, agregarTipoEstado, actualizarTipoEstado, eliminarTipoEstado}
